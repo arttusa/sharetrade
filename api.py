@@ -2,8 +2,9 @@ import os
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
+from db_handler import add_post
 
-UPLOAD_FOLDER = '..\imgs'
+UPLOAD_FOLDER = '.\imgs'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app = Flask(__name__)
@@ -22,16 +23,18 @@ def get_posts():
     return "Ok"
 
 # Method for adding a post to database and pic to disc
-@app.route('/addpost', methods=['GET', 'POST'])
+@app.route('/uploadpost', methods=['GET', 'POST'])
 @cross_origin()
-def add_post():
+def upload_post():
     file = request.files['Chart']
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         # TODO Implement filename generator
         path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(path)
-        # TODO Add other information to the database
+        user = "Matti"
+        description = "One month consolidation"
+        add_post(user, description, path)
         print("File saved" + path)
         return "Ok"
 

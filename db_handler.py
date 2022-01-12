@@ -3,21 +3,20 @@ import datetime
 # get_post()
 # add_post()
 
-def add_post():
-    filename = "../database/data.db"
+DATABASE = "./database/data.db"
+
+def add_post(user, description, path):
     post = {
-        "timestamp": datetime.datetime.now(),
-        "user": "user123",
-        "description": "Surfing the 10-day. Getting ready to break out.",
-        "path": "./imgs/000",
-        "side": "Long",
-        "timeframe": "1d"
+        "user": user,
+        "description": description,
+        "path": path
     }
-    conn = sqlite3.connect(filename)
+
+    conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
     try:
         c.execute("BEGIN TRANSACTION")
-        c.executemany(f'INSERT INTO Posts({post.timestamp} {post.user} {post.description} {post.path} {post.side} {post.timeframe} {post.votes})')
+        c.execute("INSERT INTO Posts (user, description, path) VALUES (?, ?, ?)", (post["user"], post["description"], post["path"]))
         c.execute("COMMIT TRANSACTION")
     except Exception as e:
         print("SQL Error", e)
