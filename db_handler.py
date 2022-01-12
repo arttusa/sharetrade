@@ -3,10 +3,6 @@ import datetime
 # get_post()
 # add_post()
 
-
-
-
-
 def add_post():
     filename = "../database/data.db"
     post = {
@@ -15,8 +11,7 @@ def add_post():
         "description": "Surfing the 10-day. Getting ready to break out.",
         "path": "./imgs/000",
         "side": "Long",
-        "timeframe": "1d",
-        "votes": 0,
+        "timeframe": "1d"
     }
     conn = sqlite3.connect(filename)
     c = conn.cursor()
