@@ -20,3 +20,9 @@ def add_post(user, description, path):
         c.execute("COMMIT TRANSACTION")
     except Exception as e:
         print("SQL Error", e)
+
+
+
+def get_posts():
+    # Get posts from database
+    return 

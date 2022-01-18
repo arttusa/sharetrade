@@ -1,8 +1,8 @@
 import os
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
-from db_handler import add_post
+from db_handler import add_post, get_posts
 
 UPLOAD_FOLDER = '.\imgs'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -13,14 +13,13 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
+def fetch_charts(post_list):
+    for post in post_list:
+       path = post.path
+
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-@app.route('/posts')
-def get_posts():
-    # Implement method to get first ten posts from db and possibly more
-    return "Ok"
 
 # Method for adding a post to database and pic to disc
 @app.route('/uploadpost', methods=['GET', 'POST'])
@@ -39,6 +38,13 @@ def upload_post():
         return "Ok"
 
     return "File not correct type"
+
+# http://localhost:5000/show_image/imgs_2022_01_18/Livermore_Quotes.jpg
+@app.route('/show_image/<path:path>', methods=['GET'])
+@cross_origin()
+def show_image(path):
+    # print(path) = imgs_2022_01_18/Livermore_Quotes.jpg
+    return send_from_directory(app.config['UPLOAD_FOLDER'], path)
 
 
 @app.route('/vote')
