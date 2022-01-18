@@ -1,3 +1,5 @@
+from importlib.resources import path
+import re
 import sqlite3
 import datetime
 # get_post()
@@ -22,7 +24,19 @@ def add_post(user, description, path):
         print("SQL Error", e)
 
 
-
+# Fetches ten recent posts
 def get_posts():
-    # Get posts from database
-    return 
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+    c.execute('SELECT * FROM Posts ORDER BY id DESC LIMIT 10')
+    results = c.fetchall()
+    posts = []
+    for result in results:
+        post = {
+            "timestamp": result[1],
+            "user": result[2],
+            "description": result[3],
+            "path": result[4]
+        }
+        posts.append(post)
+    return posts

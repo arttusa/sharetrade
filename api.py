@@ -1,4 +1,5 @@
 import os
+import json
 from flask import Flask, request, send_from_directory
 from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
@@ -45,6 +46,12 @@ def upload_post():
 def show_image(path):
     # print(path) = imgs_2022_01_18/Livermore_Quotes.jpg
     return send_from_directory(app.config['UPLOAD_FOLDER'], path)
+
+@app.route('/get_posts', methods=['GET'])
+@cross_origin()
+def posts():
+    posts = get_posts()
+    return json.dumps(posts)
 
 
 @app.route('/vote')
