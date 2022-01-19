@@ -32,9 +32,10 @@ def upload_post():
         # TODO Implement filename generator
         path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(path)
-        user = "Matti"
-        description = "One month consolidation"
-        add_post(user, description, path)
+        user = "Mikko"
+        symbol = "TSLA"
+        description = "Getting ready for a breakout"
+        add_post(user, symbol, description, path)
         print("File saved" + path)
         return "Ok"
 
